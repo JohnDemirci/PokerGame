@@ -21,7 +21,7 @@
 
 import Foundation
 enum score: Int {
-    case High_Card = 0, Pair, Two_Pairs, Three_of_a_Kind, Straight, Flush, Full_House, Four_of_a_Kind, Straight_Flush
+    case High_Card = 0, Pair, Two_Pairs, Three_of_a_Kind, Straight, Flush, Full_House, Four_of_a_Kind, Straight_Flush, Royal_flush
 }
 struct cards {
     var SUIT: String
@@ -34,10 +34,10 @@ struct hands {
 func createDeck () -> [cards] {
     var TempDeck = [cards]()
     let suits = ["DIAMOND", "SPADES", "CLUBS", "HEART"]
-    var counter = 1 // faces
+    var counter = 2 // faces
     for i in 0..<52 {
-        if counter > 13 {
-            counter = 1
+        if counter > 14 {
+            counter = 2
         }
         TempDeck.append(.init(SUIT: suits[i % 4], FACE: String(counter)))
         counter = counter + 1
@@ -70,6 +70,12 @@ func main () {
     userHand.theCards = usDec[0]
     deck = usDec[1]
     userHand = evalHand(eval: userHand)
+    
+    
+
+    
+    
+    
     compHand = evalHand(eval: compHand)
     compare(hand1: compHand, hand2: userHand)
 }
@@ -89,7 +95,7 @@ func userDecision (myHand: hands, myDeck: [cards]) -> ([[cards]]) {
         case "13":
             print("K of \(i.SUIT)")
             break
-        case "1":
+        case "14":
             print("A of \(i.SUIT)")
             break
         default:
@@ -102,7 +108,7 @@ func userDecision (myHand: hands, myDeck: [cards]) -> ([[cards]]) {
     var position: Int
     for _ in 0..<amountOfSwapCards {
         position = Int(readLine()!)!
-        let x = changeCard(theHand: hand, myDeck: deck, pos: position)
+        let x = changeCard(theHand: hand, myDeck: deck, pos: position-1)
         hand.theCards = x[0]
         deck = x[1]
     }
@@ -181,24 +187,26 @@ func AIdecision (myHand: hands, myDeck: [cards]) -> ([[cards]]) {
     // for a possible straight mid section has to be straight-like
     
    
-   
-    if Int(hand.theCards[1].FACE) == Int(hand.theCards[2].FACE)! - 1 && Int(hand.theCards[2].FACE) == Int(hand.theCards[3].FACE)! - 1 {
-        // possibility of a straight swap
-        // check the first an last position
-        if Int(hand.theCards[0].FACE) == Int(hand.theCards[1].FACE)! - 1 {
-            let x = changeCard(theHand: hand, myDeck: deck, pos: 4)
-            hand.theCards = x[0]
-            deck = x[1]
-            hand = evalHand(eval: hand)
-            return [hand.theCards, deck]
-        } else if Int(hand.theCards[3].FACE) == Int(hand.theCards[4].FACE)! - 1 {
-            let x = changeCard(theHand: hand, myDeck: deck, pos: 0)
-            hand.theCards = x[0]
-            deck = x[1]
-            hand = evalHand(eval: hand)
-            return [hand.theCards, deck]
+    if hand.myScore != score.Straight && hand.myScore != score.Royal_flush {
+        if Int(hand.theCards[1].FACE) == Int(hand.theCards[2].FACE)! - 1 && Int(hand.theCards[2].FACE) == Int(hand.theCards[3].FACE)! - 1 {
+            // possibility of a straight swap
+            // check the first an last position
+            if Int(hand.theCards[0].FACE) == Int(hand.theCards[1].FACE)! - 1 {
+                let x = changeCard(theHand: hand, myDeck: deck, pos: 4)
+                hand.theCards = x[0]
+                deck = x[1]
+                hand = evalHand(eval: hand)
+                return [hand.theCards, deck]
+            } else if Int(hand.theCards[3].FACE) == Int(hand.theCards[4].FACE)! - 1 {
+                let x = changeCard(theHand: hand, myDeck: deck, pos: 0)
+                hand.theCards = x[0]
+                deck = x[1]
+                hand = evalHand(eval: hand)
+                return [hand.theCards, deck]
+            }
         }
     }
+    
     // taking actions based on what the card has
     switch hand.myScore {
     case .High_Card:
@@ -263,6 +271,8 @@ func AIdecision (myHand: hands, myDeck: [cards]) -> ([[cards]]) {
         break
     case .Straight_Flush:
         break
+    case .Royal_flush:
+        break
     }
     hand = evalHand(eval: hand)
     return [hand.theCards, deck]
@@ -299,7 +309,7 @@ func compare (hand1:hands, hand2: hands) {
         case "13":
             print("K of \(i.SUIT)")
             break
-        case "1":
+        case "14":
             print("A of \(i.SUIT)")
             break
         default:
@@ -319,7 +329,7 @@ func compare (hand1:hands, hand2: hands) {
         case "13":
             print("K of \(i.SUIT)")
             break
-        case "1":
+        case "14":
             print("A of \(i.SUIT)")
             break
         default:
@@ -431,15 +441,12 @@ func evalHand (eval: hands) -> hands {
         flush = false
         hand.myScore = score.Straight_Flush
     }
-    //  *************************
-    //  * implement royal flush *
-    //  *************************
-    
-    
+    if hand.myScore == score.Straight_Flush && hand.theCards[4].SUIT == "SPADES" && hand.theCards[4].FACE == "14" {
+        // royal flush
+        hand.myScore = score.Royal_flush
+    }
     return hand
 }
-
-
 
 func sortHand (deck: [cards]) -> [cards] {
     print("\n\n\n")
@@ -473,7 +480,6 @@ func giveHand (deck: [cards], hand: hands) -> ([[cards]]) {
     tempHand = evalHand(eval: tempHand)
     return [tempHand.theCards, tempDeck]
 }
-
 main()
 
 
