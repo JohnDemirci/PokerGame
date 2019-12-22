@@ -49,10 +49,6 @@ func main () {
     // var deck = [cards]()
     // creating an array of a sfized size
     var deck = createDeck()
-    // printing out the deck
-    for index in deck {
-        print("\(index.FACE) of \(index.SUIT)")
-    }
     let temp = [cards]()
     // [userHand, deck] = giveHand(deck: deck, hand: userHand)
     var userHand = hands(theCards: temp, myScore: score.High_Card)  // creating an array for the user holding 5 cards
@@ -70,12 +66,7 @@ func main () {
     userHand.theCards = usDec[0]
     deck = usDec[1]
     userHand = evalHand(eval: userHand)
-    
-    
 
-    
-    
-    
     compHand = evalHand(eval: compHand)
     compare(hand1: compHand, hand2: userHand)
 }
@@ -338,17 +329,22 @@ func compare (hand1:hands, hand2: hands) {
     }
     if comphand.myScore.rawValue > userhand.myScore.rawValue {
         print("computer wins")
+        winninStatement(hand: comphand)
     } else if comphand.myScore.rawValue < userhand.myScore.rawValue {
         print("you win")
+        winninStatement(hand: userhand)
     }
     if  comphand.myScore.rawValue ==  userhand.myScore.rawValue {
         switch comphand.myScore {
         case .High_Card:
             if Int(comphand.theCards[4].FACE)! > Int(userhand.theCards[4].FACE)! {
                 print("computer wins")
+                print("High Card")
             } else if Int(comphand.theCards[4].FACE)! < Int(userhand.theCards[4].FACE)! {
                 print("user wins")
+                print("High Card")
             } else {
+                // check out the suit order
                 print("to be coded later")
             }
             break
@@ -368,8 +364,10 @@ func compare (hand1:hands, hand2: hands) {
             }
             if Int(comphand.theCards[compPairIndex].FACE)! > Int(userhand.theCards[userPairIndex].FACE)! {
                 print("computer wins")
+                print("Pair (High Card)")
             } else if Int(comphand.theCards[compPairIndex].FACE)! < Int(userhand.theCards[userPairIndex].FACE)! {
                 print("user wins")
+                print("Pair (High Card)")
             }
             break
         default:
@@ -378,7 +376,40 @@ func compare (hand1:hands, hand2: hands) {
     }
 }
 
-
+func winninStatement (hand: hands) {
+    switch hand.myScore {
+    case .High_Card:
+        print("high card")
+        break
+    case .Flush:
+        print("flush")
+        break
+    case .Four_of_a_Kind:
+        print("four of a kind")
+        break
+    case .Full_House:
+        print("full house")
+        break
+    case .Pair:
+        print("pair")
+        break
+    case .Royal_flush:
+        print("Royal Flush")
+        break
+    case .Straight:
+        print("Straight")
+        break
+    case .Straight_Flush:
+        print("Straight Flush")
+        break
+    case .Three_of_a_Kind:
+        print("Three of a Kind")
+        break
+    case .Two_Pairs:
+        print("Two Pairs")
+        break
+    }
+}
 
 
 func evalHand (eval: hands) -> hands {
@@ -449,7 +480,6 @@ func evalHand (eval: hands) -> hands {
 }
 
 func sortHand (deck: [cards]) -> [cards] {
-    print("\n\n\n")
     var evalDeck = deck
     for i in 0..<5 {
         for j in 0..<5-i-1 {
@@ -461,7 +491,6 @@ func sortHand (deck: [cards]) -> [cards] {
             }
         }
     }
-    print("\n\n\n")
     return evalDeck
 }
 
@@ -480,7 +509,12 @@ func giveHand (deck: [cards], hand: hands) -> ([[cards]]) {
     tempHand = evalHand(eval: tempHand)
     return [tempHand.theCards, tempDeck]
 }
-main()
+
+let j = true
+while j == true {
+    main()
+}
+
 
 
 
