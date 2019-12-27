@@ -294,50 +294,36 @@ func changeCard (theHand: hands, myDeck: [cards], pos: Int) -> ([[cards]]) {
     return [hand.theCards, deck]
 }
 
+func listView (hand: hands) {
+    for i in hand.theCards {
+        switch i.FACE {
+            case "11":
+               print("J of \(i.SUIT.SUITNAME)")
+               break
+           case "12":
+               print("Q of \(i.SUIT.SUITNAME)")
+               break
+           case "13":
+               print("K of \(i.SUIT.SUITNAME)")
+               break
+           case "14":
+               print("A of \(i.SUIT.SUITNAME)")
+               break
+           default:
+               print("\(i.FACE) of \(i.SUIT.SUITNAME)")
+        }
+    }
+}
+
 
 func compare (hand1:hands, hand2: hands) {
     let comphand = hand1
     let userhand = hand2
     print("the computer has: ")
-    for i in comphand.theCards {
-        
-        switch i.FACE {
-        case "11":
-            print("J of \(i.SUIT.SUITNAME)")
-            break
-        case "12":
-            print("Q of \(i.SUIT.SUITNAME)")
-            break
-        case "13":
-            print("K of \(i.SUIT.SUITNAME)")
-            break
-        case "14":
-            print("A of \(i.SUIT.SUITNAME)")
-            break
-        default:
-            print("\(i.FACE) of \(i.SUIT.SUITNAME)")
-        }
-    }
+    listView(hand: comphand)
     print("\n\n")
     print("you have: ")
-    for i in userhand.theCards {
-        switch i.FACE {
-        case "11":
-            print("J of \(i.SUIT.SUITNAME)")
-            break
-        case "12":
-            print("Q of \(i.SUIT.SUITNAME)")
-            break
-        case "13":
-            print("K of \(i.SUIT.SUITNAME)")
-            break
-        case "14":
-            print("A of \(i.SUIT.SUITNAME)")
-            break
-        default:
-            print("\(i.FACE) of \(i.SUIT.SUITNAME)")
-        }
-    }
+    listView(hand: userhand)
     if comphand.myScore.rawValue > userhand.myScore.rawValue {
         print("computer wins")
         winninStatement(hand: comphand)
@@ -501,7 +487,6 @@ func evalHand (eval: hands) -> hands {
          }
      }
      */
-    
     // based on the pair do these
     switch pairCounter {
     case 0:
