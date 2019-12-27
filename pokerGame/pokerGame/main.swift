@@ -23,23 +23,34 @@ import Foundation
 enum score: Int {
     case High_Card = 0, Pair, Two_Pairs, Three_of_a_Kind, Straight, Flush, Full_House, Four_of_a_Kind, Straight_Flush, Royal_flush
 }
+
+struct suits {
+    var SUITNAME: String
+    var SUITVALUE: Int
+}
+
 struct cards {
-    var SUIT: String
+    var SUIT: suits
     var FACE: String
 }
+
 struct hands {
     var theCards = [cards]()
     var myScore: score
 }
+
 func createDeck () -> [cards] {
     var TempDeck = [cards]()
-    let suits = ["DIAMOND", "SPADES", "CLUBS", "HEART"]
+    let suitss = ["CLUBS", "DIAMOND", "HEART", "SPADES"]
     var counter = 2 // faces
     for i in 0..<52 {
         if counter > 14 {
             counter = 2
         }
-        TempDeck.append(.init(SUIT: suits[i % 4], FACE: String(counter)))
+        // TempDeck.append(.init(SUIT: suits[i % 4], FACE: String(counter)))
+        
+        TempDeck.append(.init(SUIT: .init(SUITNAME: suitss[i % 4], SUITVALUE: i % 4), FACE: String(counter)))
+        
         counter = counter + 1
     }
     return TempDeck
@@ -78,19 +89,19 @@ func userDecision (myHand: hands, myDeck: [cards]) -> ([[cards]]) {
     for i in hand.theCards {
         switch i.FACE {
         case "11":
-            print("J of \(i.SUIT)")
+            print("J of \(i.SUIT.SUITNAME)")
             break
         case "12":
-            print("Q of \(i.SUIT)")
+            print("Q of \(i.SUIT.SUITNAME)")
             break
         case "13":
-            print("K of \(i.SUIT)")
+            print("K of \(i.SUIT.SUITNAME)")
             break
         case "14":
-            print("A of \(i.SUIT)")
+            print("A of \(i.SUIT.SUITNAME)")
             break
         default:
-            print("\(i.FACE) of \(i.SUIT)")
+            print("\(i.FACE) of \(i.SUIT.SUITNAME)")
         }
     }
     print("how many cards do you want to swap ?")
@@ -120,19 +131,19 @@ func AIdecision (myHand: hands, myDeck: [cards]) -> ([[cards]]) {
     // if 4/5 the suits are the same
     // the the computer decides to draw one card
     for i in hand.theCards {
-        if i.SUIT == "DIAMOND" {
+        if i.SUIT.SUITNAME == "DIAMOND" {
             diamondCount = diamondCount + 1
-        } else if i.SUIT == "HEART" {
+        } else if i.SUIT.SUITNAME == "HEART" {
             heartCount = heartCount + 1
-        } else if i.SUIT == "CLUBS" {
+        } else if i.SUIT.SUITNAME == "CLUBS" {
             clubCount = clubCount + 1
-        } else if i.SUIT == "SPADES" {
+        } else if i.SUIT.SUITNAME == "SPADES" {
             spadesCount = spadesCount + 1
         }
     }
     if spadesCount == 4 {
         for i in 0..<5 {
-            if hand.theCards[i].SUIT != "SPADES" {
+            if hand.theCards[i].SUIT.SUITNAME != "SPADES" {
                 let x = changeCard(theHand: hand, myDeck: deck, pos: i)
                 hand.theCards = x[0]
                 deck = x[1]
@@ -143,7 +154,7 @@ func AIdecision (myHand: hands, myDeck: [cards]) -> ([[cards]]) {
     }
     if heartCount == 4 {
         for i in 0..<5 {
-            if hand.theCards[i].SUIT != "HEART" {
+            if hand.theCards[i].SUIT.SUITNAME != "HEART" {
                 let x = changeCard(theHand: hand, myDeck: deck, pos: i)
                 hand.theCards = x[0]
                 deck = x[1]
@@ -154,7 +165,7 @@ func AIdecision (myHand: hands, myDeck: [cards]) -> ([[cards]]) {
     }
     if diamondCount == 4 {
         for i in 0..<5 {
-            if hand.theCards[i].SUIT != "DIAMOND" {
+            if hand.theCards[i].SUIT.SUITNAME != "DIAMOND" {
                 let x = changeCard(theHand: hand, myDeck: deck, pos: i)
                 hand.theCards = x[0]
                 deck = x[1]
@@ -165,7 +176,7 @@ func AIdecision (myHand: hands, myDeck: [cards]) -> ([[cards]]) {
     }
     if clubCount == 4 {
         for i in 0..<5 {
-            if hand.theCards[i].SUIT != "CLUBS" {
+            if hand.theCards[i].SUIT.SUITNAME != "CLUBS" {
                 let x = changeCard(theHand: hand, myDeck: deck, pos: i)
                 hand.theCards = x[0]
                 deck = x[1]
@@ -292,19 +303,19 @@ func compare (hand1:hands, hand2: hands) {
         
         switch i.FACE {
         case "11":
-            print("J of \(i.SUIT)")
+            print("J of \(i.SUIT.SUITNAME)")
             break
         case "12":
-            print("Q of \(i.SUIT)")
+            print("Q of \(i.SUIT.SUITNAME)")
             break
         case "13":
-            print("K of \(i.SUIT)")
+            print("K of \(i.SUIT.SUITNAME)")
             break
         case "14":
-            print("A of \(i.SUIT)")
+            print("A of \(i.SUIT.SUITNAME)")
             break
         default:
-            print("\(i.FACE) of \(i.SUIT)")
+            print("\(i.FACE) of \(i.SUIT.SUITNAME)")
         }
     }
     print("\n\n")
@@ -312,19 +323,19 @@ func compare (hand1:hands, hand2: hands) {
     for i in userhand.theCards {
         switch i.FACE {
         case "11":
-            print("J of \(i.SUIT)")
+            print("J of \(i.SUIT.SUITNAME)")
             break
         case "12":
-            print("Q of \(i.SUIT)")
+            print("Q of \(i.SUIT.SUITNAME)")
             break
         case "13":
-            print("K of \(i.SUIT)")
+            print("K of \(i.SUIT.SUITNAME)")
             break
         case "14":
-            print("A of \(i.SUIT)")
+            print("A of \(i.SUIT.SUITNAME)")
             break
         default:
-            print("\(i.FACE) of \(i.SUIT)")
+            print("\(i.FACE) of \(i.SUIT.SUITNAME)")
         }
     }
     if comphand.myScore.rawValue > userhand.myScore.rawValue {
@@ -345,7 +356,14 @@ func compare (hand1:hands, hand2: hands) {
                 print("High Card")
             } else {
                 // check out the suit order
-                print("to be coded later")
+                // Clubs, Diamonds, Hearts, Spades
+                if comphand.theCards[4].SUIT.SUITVALUE > userhand.theCards[4].SUIT.SUITVALUE {
+                    print("computer wins")
+                     print("High Card")
+                } else {
+                    print("user wins")
+                     print("High Card")
+                }
             }
             break
         case .Pair:
@@ -368,7 +386,55 @@ func compare (hand1:hands, hand2: hands) {
             } else if Int(comphand.theCards[compPairIndex].FACE)! < Int(userhand.theCards[userPairIndex].FACE)! {
                 print("user wins")
                 print("Pair (High Card)")
+            } else if Int(comphand.theCards[compPairIndex].FACE)! == Int(userhand.theCards[userPairIndex].FACE)! {
+                var userPair: Int
+                var campPair: Int
+                if userhand.theCards[userPairIndex].SUIT.SUITVALUE > userhand.theCards[userPairIndex + 1].SUIT.SUITVALUE {
+                    userPair = userPairIndex
+                } else {
+                    userPair = userPairIndex + 1
+                }
+                if comphand.theCards[compPairIndex].SUIT.SUITVALUE > comphand.theCards[compPairIndex + 1].SUIT.SUITVALUE {
+                    campPair = compPairIndex
+                } else {
+                    campPair = compPairIndex + 1
+                }
+                if campPair > userPair {
+                    print("Computer wins")
+                } else if campPair < userPair {
+                    print("User Wins")
+                }
             }
+            break
+        case .Two_Pairs:
+            // get the location of the highest pair of each ahnd
+            // compare the suit values of the two pairs
+            break
+        case .Straight:
+            if Int(userhand.theCards[4].FACE)! > Int(comphand.theCards[4].FACE)!  {
+                print("user wins \nStraight (Pair)")
+            } else if Int(userhand.theCards[4].FACE)! < Int(comphand.theCards[4].FACE)!  {
+                print("computer wins \nStraight (Pair)")
+            } else if  Int(userhand.theCards[4].FACE)! == Int(comphand.theCards[4].FACE)!  {
+                if userhand.theCards[4].SUIT.SUITVALUE > comphand.theCards[4].SUIT.SUITVALUE {
+                    print("user wins \nStraight (High Card)")
+                } else {
+                    print("computer wins \nStraight (High Card)")
+                }
+            }
+            break
+        case .Flush:
+            if Int(userhand.theCards[4].FACE)! > Int(comphand.theCards[4].FACE)!  {
+                           print("user wins \nFlush (High)")
+                       } else if Int(userhand.theCards[4].FACE)! < Int(comphand.theCards[4].FACE)!  {
+                           print("computer wins \nFlush (High)")
+                       } else if  Int(userhand.theCards[4].FACE)! == Int(comphand.theCards[4].FACE)!  {
+                           if userhand.theCards[4].SUIT.SUITVALUE > comphand.theCards[4].SUIT.SUITVALUE {
+                               print("user wins \nFlush (High Card)")
+                           } else {
+                               print("computer wins \nFlush (High Card)")
+                           }
+                       }
             break
         default:
             print("default")
@@ -410,8 +476,6 @@ func winninStatement (hand: hands) {
         break
     }
 }
-
-
 func evalHand (eval: hands) -> hands {
     var hand = eval
     hand.theCards = sortHand(deck: hand.theCards)
@@ -430,21 +494,33 @@ func evalHand (eval: hands) -> hands {
             }
         }
     }
-    for i in 0..<3 {
-        if hand.theCards[i].FACE == hand.theCards[i+2].FACE {
-            hand.myScore = score.Three_of_a_Kind
-        }
-    }
+    /*
+     for i in 0..<3 {
+         if hand.theCards[i].FACE == hand.theCards[i+2].FACE {
+             hand.myScore = score.Three_of_a_Kind
+         }
+     }
+     */
     
     // based on the pair do these
-    if pairCounter == 1 {
-        hand.myScore = score.Pair
-    } else if pairCounter == 2 {
-        hand.myScore = score.Two_Pairs
-    } else if pairCounter == 4 {
-        hand.myScore = score.Full_House
-    } else if pairCounter == 0 {
+    switch pairCounter {
+    case 0:
         hand.myScore = score.High_Card
+        break
+    case 1:
+        hand.myScore = score.Pair
+        break
+    case 2:
+        hand.myScore = score.Two_Pairs
+        break
+    case 3:
+        hand.myScore = score.Three_of_a_Kind
+        break
+    case 4:
+        hand.myScore = score.Four_of_a_Kind
+        break
+    default:
+        print("oof")
     }
     
     // checking for four of a kind
@@ -461,8 +537,8 @@ func evalHand (eval: hands) -> hands {
         hand.myScore = score.Straight
     }
     // checking for flush
-    if ((hand.theCards[0].SUIT) == (hand.theCards[1].SUIT) && (hand.theCards[0].SUIT) == (hand.theCards[2].SUIT) && (hand.theCards[0].SUIT) == (hand.theCards[3].SUIT) &&
-        (hand.theCards[0].SUIT) == (hand.theCards[4].SUIT))  {
+    if ((hand.theCards[0].SUIT.SUITNAME) == (hand.theCards[1].SUIT.SUITNAME) && (hand.theCards[0].SUIT.SUITNAME) == (hand.theCards[2].SUIT.SUITNAME) && (hand.theCards[0].SUIT.SUITNAME) == (hand.theCards[3].SUIT.SUITNAME) &&
+        (hand.theCards[0].SUIT.SUITNAME) == (hand.theCards[4].SUIT.SUITNAME))  {
         flush = true
         hand.myScore = score.Flush
     }
@@ -472,7 +548,7 @@ func evalHand (eval: hands) -> hands {
         flush = false
         hand.myScore = score.Straight_Flush
     }
-    if hand.myScore == score.Straight_Flush && hand.theCards[4].SUIT == "SPADES" && hand.theCards[4].FACE == "14" {
+    if hand.myScore == score.Straight_Flush && hand.theCards[4].SUIT.SUITNAME == "SPADES" && hand.theCards[4].FACE == "14" {
         // royal flush
         hand.myScore = score.Royal_flush
     }
@@ -510,10 +586,8 @@ func giveHand (deck: [cards], hand: hands) -> ([[cards]]) {
     return [tempHand.theCards, tempDeck]
 }
 
-let j = true
-while j == true {
-    main()
-}
+main()
+
 
 
 
